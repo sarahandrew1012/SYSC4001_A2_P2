@@ -11,7 +11,6 @@
 #include <sys/shm.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
-
 int main() {
     pid_t pid = fork();
     int counter = 0;
@@ -38,27 +37,15 @@ int main() {
     struct sembuf lock  = {0, -1, 0};
     struct sembuf unlock = {0, 1, 0};
 
-    // ensuring it doesn't fail
-    if (shmid == -1) {
-        perror("shmget");
-        exit(1);
-    }
-
-    if (shm_ptr == (int *)-1) {
-        perror("shmat failed");
-        exit(1);
-    }
-
     if (pid < 0) {
         perror("Fork failed.");
         exit(1);
     }
 
-
     if (pid == 0) {
         // launching process 2
-        char *args[] = {"./process2", NULL};
-        execvp("./process2", args);
+        char *args[] = {"./q5_process2", NULL};
+        execvp("./q5_process2", args);
         perror("execvp failed.");
         exit(1);
     } else {
@@ -68,15 +55,15 @@ int main() {
 
             if (*shared_vars > 100) {
                 if (*shared_vars % *multiple == 0) {
-                printf("Process 1: Cycle number: %d - %d is a multiple of %d.\n", cycle, *shared_vars, *multiple);
+                printf("Process 1 with (PID %d): Cycle number: %d - %d is a multiple of %d.\n", getpid(), cycle, *shared_vars, *multiple);
             } else {
-                printf("Process 1: Cycle number: %d - Counter: %d\n", cycle, *shared_vars);
+                printf("Process 1 with (PID %d): Cycle number: %d - Counter: %d\n", getpid(), cycle, *shared_vars);
             }
         }
             (*shared_vars)++;
             cycle++;
             semop(semid, &unlock, 1);
-            usleep(50000);
+            usleep(70000);
         }
         waitpid(pid, &status, 0);
         // clean up processes

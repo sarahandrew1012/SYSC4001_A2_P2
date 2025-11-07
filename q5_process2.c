@@ -17,7 +17,7 @@ int main() {
 
     int shmid = shmget(key, sizeof(int) * 2, IPC_CREAT | 0666);
     int *shm_ptr = (int *)shmat(shmid, NULL, 0);
-    int semid = semget(key_sem, 1, 0666);
+    int semid = semget(key_sem, 1, 0666 | IPC_CREAT);
 
     // defining shared memory vars.
     int *multiple = &shm_ptr[0];
@@ -28,7 +28,7 @@ int main() {
     struct sembuf unlock = {0, 1, 0};
 
     while (*shared_vars <= 100) {
-        usleep(7000);
+        usleep(70000);
     }
 
     for (;*shared_vars <= 500; cycle++) {
@@ -37,14 +37,16 @@ int main() {
         
         // checking to see if a multiple of 3
         if (*shared_vars % *multiple == 0) {
-            printf("Process 2: Cycle number: %d - %d is a multiple of %d.\n", cycle, *shared_vars, *multiple);
+            printf("Process 2 with (PID %d): Cycle number: %d - %d is a multiple of %d.\n", getpid(), cycle, *shared_vars, *multiple);
         } else {
-            printf("Process 2:  Cycle number: %d - Counter: %d\n", cycle, *shared_vars);
+            printf("Process 2 with (PID %d):  Cycle number: %d - Counter: %d\n", getpid(), cycle, *shared_vars);
         }
         // to slow down the output & unlock
         semop(semid, &unlock, 1);
-        usleep(50000);
+        usleep(700000);
     }
+    printf("Process 2 with (PID %d): Exiting with %d.\n", getpid(), *shared_vars);
+    // detach memory
     shmdt(shm_ptr);
     return 0;
 }
