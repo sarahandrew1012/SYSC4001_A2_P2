@@ -1,6 +1,6 @@
 /**
  * @author Sarah Andrew, 101303468
- * @author Kaylah Mckez, 101307188
+ * @author Kaylah McKesey, 101307188
  * 
  */
 #include <stdio.h>
