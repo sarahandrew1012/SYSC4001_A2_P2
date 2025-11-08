@@ -13,7 +13,6 @@
 
 int main() {
     pid_t pid = fork();
-
     key_t key = ftok(".", 'S');
     // declaring the shared memory space.
     int shmid = shmget(key, sizeof(int) * 2, IPC_CREAT | 0666);
@@ -51,10 +50,11 @@ int main() {
             cycle++;
             usleep(70000);
         }
-        // checking to see if its a multiple of 3.
+        // waits for process & displays the process1
         printf("Process 1 with (PID %d): Process 2 counter is 500 and exits process.\n", getpid());
         wait(NULL);
 
+        // clean up process
         shmdt(shm_ptr);
         shmctl(shmid, IPC_RMID,NULL);
     }  

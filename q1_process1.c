@@ -11,6 +11,7 @@ int main() {
     // create process
     pid_t pid = fork();
 
+    // check to make sure fork doesn't fail
     if (pid < 0) {
         perror("Fork failed.");
         exit(1);

@@ -14,6 +14,7 @@ int main() {
     int multiple = 3;
     int cycle = 0;
 
+    // checks to make sure fork doesn't fail
     if (pid < 0) {
         perror("Fork failed.");
         exit(1);
@@ -30,6 +31,7 @@ int main() {
         // checking to see if its a multiple of 3.
         while(1) {
             if (counter % multiple == 0) {
+                // displays multiples
                 printf("Process 1 with (PID %d): Cycle %d - %d is a multiple of %d\n", getpid(), cycle, counter, multiple);
             } else {
                 printf("Process 1 with (PID %d): Cycle %d - %d\n", getpid(), cycle, counter);

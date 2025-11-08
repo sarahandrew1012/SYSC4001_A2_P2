@@ -31,11 +31,13 @@ int main() {
         int index;
 
         while (1) {
+            // call wait system call
             pid_t completed = waitpid(pid, &index, WNOHANG);
            
             if (completed == pid) {
                 break;
             }
+            // checks if multiple of 3
             if (counter % multiple == 0) {
                 printf("Process 1  with (PID %d): Cycle %d - %d is a multiple of %d\n", getpid(), cycle, counter, multiple);
             } else {
@@ -46,7 +48,7 @@ int main() {
             cycle++;
             usleep(70000);
         }
-        // checking to see if its a multiple of 3.
+        // displays the process 1 PID and when process 2 finishes.
         printf("Process 1 with (PID %d): Process 2 finishes, and exits process.\n", getpid());
     }
     return 0;

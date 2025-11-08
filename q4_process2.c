@@ -27,6 +27,7 @@ int main() {
     }
 
     while (*shared_vars <= 500) {
+        // uses shared variable to determine the multiple of 3 & displays it
         if (*shared_vars % *multiple == 0) {
             printf("Process 2 with (PID %d): Cycle %d - %d is a multiple of %d\n", getpid(), cycle, *shared_vars, *multiple);
         } else {
